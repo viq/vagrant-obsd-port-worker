@@ -5,12 +5,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :i386 do |i386|
     i386.vm.box = "obsd-current-i386"
-    i386.vm.network :private_network, ip: "192.168.50.4"
+    i386.vm.network :private_network, ip: "192.168.50.4", type: "static"
   end
 
   config.vm.define :amd64 do |amd64|
     amd64.vm.box = "obsd-current-amd64"
-    amd64.vm.network :private_network, ip: "192.168.50.5"
+    amd64.vm.network :private_network, ip: "192.168.50.5", type: "static"
   end
 
   config.vm.provider :virtualbox do |v|
