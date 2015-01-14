@@ -18,11 +18,22 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--memory", 512]
   end
 
+  [ :up, :destroy ].each do |command|
+    config.trigger.before command do
+      run "mkdir -p /tmp/pobj ; mkdir -p /tmp/plist"
+    end
+  end
+
+  config.ssh.shell = "sh"
+
   ## For masterless, mount your file roots file root
   #config.vm.synced_folder "salt/roots/", "/srv/"
   #config.vm.synced_folder "./openbsd-wip", "/usr/ports/openbsd-wip", nfs: true
   # THIS WORKS:
   config.vm.synced_folder "./vagrant", "/vagrant", id: "root", :nfs => true
+  config.vm.synced_folder "~/Work/OpenBSD/ports", "/usr/ports", :nfs => true
+  config.vm.synced_folder "/tmp/pobj", "/usr/ports/pobj", :nfs => true
+  config.vm.synced_folder "/tmp/plist", "/usr/ports/plist", :nfs => true
   config.vm.synced_folder "~/Work/OpenBSD/distfiles", "/usr/ports/distfiles", :nfs => true
   config.vm.synced_folder "~/Work/OpenBSD/packages/current", "/usr/ports/packages", :nfs => true
   config.vm.synced_folder "~/Work/OpenBSD/openbsd-wip", "/usr/ports/openbsd-wip", :nfs => true
